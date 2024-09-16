@@ -11,160 +11,128 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
 
+/**
+ * The RestClient program implements an class that
+ * use url to connect to the rest api
+ */
+
 public class RestClient {
-    private static final String BASE_URL = "http://192.168.1.220:8080/CalorieTracker/webresources/";
+    private static final String BASE_URL = "https://test-api-on-your-toes.herokuapp.com/";
     // private static final String MAP_URL = "https://maps.googleapis.com/maps/api/geocode/json?address=";
 
-    // eduroam
-    // private static final String BASE_URL = "http://118.138.20.238:8080/CalorieTracker/webresources/";
-    public static String getUserLogin(String userName, String passWordHash) throws JSONException {
-        final String methodPathUser = "calorietracker.users/findByUserName/" + userName;
-        String userId = "";
-        String user = getData(methodPathUser);
-
-        JSONArray userArray = new JSONArray(user);
-        userId = Integer.toString(userArray.getJSONObject(0).getInt("userId"));
-
-        final String methodPathCred = "calorietracker.credential/findByUserId/" + userId;
-        JSONArray credArray = new JSONArray(getData(methodPathCred));
-        String hash = credArray.getJSONObject(0).getString("passwordHash");
-
-        if (hash.equals(passWordHash))
-            return user;
-        else
-            return "";
-    }
-
-    public static String getBurnPerStep(String userId) {
-        // http://localhost:8080/CalorieTracker/webresources/calorietracker.users/countCalorieBurnPerStep/1
-        String methodPath = "calorietracker.users/countCalorieBurnPerStep/" + userId;
-        String result = getData(methodPath).replaceAll("[^\\d.]", "");
-        return result;
-    }
-
-    public static String getBmr(String userId) {
-        String methodPath = "calorietracker.users/countBmrViaActivity/" + userId;
-        String result = getData(methodPath).replaceAll("[^\\d.]", "");
-        return result;
-    }
-
-    //webresources/calorietracker.consumption/countTotalCalorie/1/20180325
-    public static String getTodayConsume(String userId, String date) {
-        String methodPath = "calorietracker.consumption/countTotalCalorie/" + userId + "/" + date;
-        String result = getData(methodPath).replaceAll("[^\\d.]", "");
-        return result;
-    }
-
-    // [1500.00,1800.00,800.00] c b g+b-c
-    public static String produceOneDayReport(String userId, String date){
-        String methodPath = "calorietracker.report/produceReport/" + userId + "/" + date;
-        return getData(methodPath);
-    }
-
-    // [11900.0,10000.0,8500] b c s
-    public static String produceReport(String userId, String dateS, String dateE){
-        String methodPath = "calorietracker.report/produceReport3/" + userId + "/" + dateS + "/" + dateE;
-        return getData(methodPath);
-    }
-
-    public static String getFoodById(String foodId) {
-        String methodPath = "calorietracker.food/" + foodId;
-        return getData(methodPath);
-    }
-
-    public static String getAllFood() {
-        String methodPath = "calorietracker.food/";
-        return getData(methodPath);
-    }
-
-    public static String getUserById(String userId) {
-        // http://localhost:8080/CalorieTracker/webresources/calorietracker.users/1?
-        String methodPath = "calorietracker.users/" + userId;
-        return getData(methodPath);
-    }
-
-    public static String getReportByNameAndDate(String userName, String date) {
-        String methodPath = "calorietracker.report/findUserNameAndReportDate/" + userName + "/" + date;
-        return getData(methodPath);
-    }
-
-//    public static void updateReportStep(String userName, String date, String steps) throws JSONException {
-//        //{"calorieGoal":500.00,"reportDate":"20190325","reportId":10,"totalCaloriesBurned":1800.00,"totalCaloriesConsumed":1500.00,"totalStepTaken":1500,"userId":{"address":"Adelaide","dob":"19900101","email":"aaa@gmail.com","gender":"female","height":1.60,"levelOfActivity":1,"postcode":"3001","stepsPerMile":2400,"surname":"Adams","userId":1,"userName":"Alice","weight":50.00}}
-//
-//        String report = getReportByNameAndDate(userName, date);
-//        JSONArray reportJA = new JSONArray(report);
-//        JSONObject reportJO = reportJA.getJSONObject(0);
-//        reportJO.put("totalStepTaken", Integer.parseInt(steps));
-//        int reportId = reportJO.getInt("reportId");
-//        String methodPath = "calorietracker.report";
-//        report = reportJO.toString();
-//        report = report.substring(0, report.length() - 1);
-//        updateData(methodPath, Integer.toString(reportId), report);
+    /**
+     * get all suburbs
+     */
+//    public static String getSuburb() {
+//        // http://localhost:8080/getSuburb
+//        String methodPath = "getSuburb";
+//        return getData(methodPath).replaceAll("[^\\d.]", "");
 //    }
 
-    public static void postReportStep(String userId, String date, String steps, String goal, String burn, String consume)
-            throws JSONException {
-        String report = "";
-        int reportId = getMaxId("report") + 1;
-        JSONObject userJO = new JSONObject(getUserById(userId));
-        JSONObject reportJO = new JSONObject();
-        // {"userId":{"address":"Melbourne","dob":"19950505","email":"test","gender":"female","height":1.75,"levelOfActivity":3,"postcode":"3000","stepsPerMile":2400,"surname":"test","userId":6,"userName":"test","weight":60},
-        // "reportDate":"20190519","calorieGoal":0,"totalStepTaken":0,"totalCaloriesBurned":0}
-        // "calorieGoal":500.00,"reportDate":"20190325","reportId":1,"totalCaloriesBurned":1800.00,"totalCaloriesConsumed":1500.00,"totalStepTaken":1000
-
-        reportJO.put("userId", userJO);
-        reportJO.put("reportDate", date);
-
-        reportJO.put("reportId", reportId);
-        reportJO.put("calorieGoal", Double.parseDouble(goal));
-        reportJO.put("totalStepTaken", Integer.parseInt(steps));
-        reportJO.put("totalCaloriesBurned", Double.parseDouble(burn));
-        reportJO.put("totalCaloriesBurned", Double.parseDouble(consume));
-        report = reportJO.toString();
-        String methodPath = "calorietracker.report";
-        postData(methodPath, report);
-    }
-
-    public static void createUser(String input) {
-        String resURL = "calorietracker.users";
-        postData(resURL, input);
-    }
-
-    public static void createCredential(String input) {
-        //{"credId":6,"passwordHash":"9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08","signUpDate":"20190518","userId":{"address":"Melbourne","dob":"19960605","email":"test","gender":"female","height":"1.75","levelOfActivity":"3","postcode":"3000","stepsPerMile":"null","surname":"test","userId":6,"userName":"test","weight":"65"}}
-        //{"credId":1,"passwordHash":"b3464291a58f65050d16b715a13e1c4d422785e733f7a9c44e381dfe620b5855","signUpDate":"20190101","userId":{"address":"Adelaide","dob":"19900101","email":"aaa@gmail.com","gender":"female","height":1.60,"levelOfActivity":1,"postcode":"3001","stepsPerMile":2400,"surname":"Adams","userId":1,"userName":"Alice","weight":50.00}}
-        String cred = "";
-        try {
-            JSONObject credJO = new JSONObject(input);
-            String userId = credJO.getString("userId");
-            String userInfo = getUserById(userId);
-            JSONObject userJO = new JSONObject(userInfo);
-            credJO.put("userId", userJO);
-            cred = credJO.toString();
-        } catch (JSONException e) {
-            e.printStackTrace();
+    /**
+     * get postcode by suburb name
+     */
+    static String getSuburbByAddress(String suburb) {
+        // http://localhost:8080/getSuburb
+        String methodPath = "getSuburbByName/\"" + suburb + ",_____\"";
+        String result = "";
+        String connReturn = getData(methodPath);
+        result = connReturn.replaceAll("[^\\d.]", "");
+        if (!result.equals("")) {
+            result = result.substring(0, 4);
         }
-        String resURL = "calorietracker.credential";
-        postData(resURL, cred);
+        return result;
     }
 
-    // {"calorieAmount":62.00,"category":"Fruits","fat":0.50,"foodId":1,"foodName":"apple","servingAmount":128.00,"servingUnit":"one cup"}
-    // {"consDate":"20190325","consId":1,"foodId":{"calorieAmount":62.00,"category":"Fruits","fat":0.50,"foodId":1,"foodName":"apple","servingAmount":128.00,"servingUnit":"one cup"},"quantity":3.00,"userId":{"address":"Adelaide","dob":"19900101","email":"aaa@gmail.com","gender":"female","height":1.60,"levelOfActivity":1,"postcode":"3001","stepsPerMile":2400,"surname":"Adams","userId":1,"userName":"Alice","weight":50.00}}
-    public static void updateConsumprion(String reportId, String consumption) {
-        String methodPath = "calorietracker.consumption";
-        updateData(methodPath, reportId, consumption);
+    /**
+     * get suburb by postcode
+     */
+    static String getSuburbByPostcode(String postcode) throws JSONException {
+        // http://localhost:8080/getSuburb
+        String methodPath = "getSuburbByPostcode/\"%25" + postcode + "\"";
+        String result = "";
+        String connReturn = getData(methodPath);
+        if (!connReturn.equals("[]")) {
+            JSONArray jsonArray = new JSONArray(connReturn);
+            result = jsonArray.getJSONObject(0).getString("SuburbPostcode");
+        }
+        return result;
     }
 
-    public static void postFood(String reportId, String food) {
-        String methodPath = "calorietracker.report/" + reportId;
-        postData(methodPath, food);
+    /**
+     * get exercise by name
+     */
+    static String getExerciseByName(String name) {
+        // http://localhost:8080/getSuburb
+        String methodPath = "getExerciseByName/\"" + name + "\"";
+        String result = "";
+        String connReturn = getData(methodPath);
+        if (!connReturn.equals((""))) {
+            result = connReturn;
+        }
+        return result;
     }
 
-    public static void postData(String urlStr, String data) {
-        URL url = null;
+    /**
+     * get suburb risk score
+     */
+    static String getSuburbScore(String suburbAndPostcode) {
+        // http://localhost:8080/getSuburbScore/"Aubrey, 3393"
+        String methodPath = "getSuburbScore/\"" + suburbAndPostcode + "\"";
+        String result = getData(methodPath).replaceAll("[^\\d.]", "");
+        return result;
+    }
+
+    /**
+     * get suburb risk indicator
+     */
+    static String getSuburbIndicator(String suburbAndPostcode) {
+        // http://localhost:8080/getSuburbScore/"Aubrey, 3393"
+        String methodPath = "getSuburbIndicator/\"" + suburbAndPostcode + "\"";
+        String result = getData(methodPath).replaceAll("[^a-zA-Z ]", "").substring(9);
+        return result;
+    }
+
+//    public static String getLocationPercentage(String suburbAndPostcode) {
+//        // http://localhost:8080/getLocationPercentage/"Aubrey, 3393"
+//        String methodPath = "getLocationPercentage/\"" + suburbAndPostcode + "\"";
+//        String dataReturn = getData(methodPath);
+//        String result = dataReturn;
+//        return result;
+//    }
+
+    /**
+     * get password hash by user name
+     */
+    static String getUserPasswordByName(String username) {
+        String methodPath = "getUserPasswordByName/\"" + username + "\"";
+        String dataReturn = getData(methodPath);
+        if (dataReturn.equals("[]")) {
+            return "";
+        }
+        return dataReturn;
+    }
+
+    /**
+     * post user in the database
+     */
+    static void postUser(String userName, String passwordHash) throws JSONException {
+        int userId = getMaxId() + 1;
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("USER_ID", userId);
+        jsonObject.put("USER_NAME", userName);
+        jsonObject.put("PASSWORD_HASH", passwordHash);
+        postData(jsonObject.toString());
+    }
+
+    /**
+     * post data to database by rest api
+     */
+    private static void postData(String data) {
+        URL url;
         HttpURLConnection conn = null;
         try {
-            url = new URL(BASE_URL + urlStr);
+            url = new URL(BASE_URL + "postUser");
             conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(10000);
             conn.setConnectTimeout(15000);
@@ -176,7 +144,7 @@ public class RestClient {
             out.print(data);
             out.close();
             int responseCode = conn.getResponseCode();
-            Log.i("error", new Integer(responseCode).toString());
+            Log.i("error", Integer.valueOf(responseCode).toString());
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -184,75 +152,41 @@ public class RestClient {
         }
     }
 
-    public static void updateData(String urlStr, String id, String data) {
-        URL url = null;
-        HttpURLConnection conn = null;
-        try {
-            url = new URL(BASE_URL + urlStr + "/" + id);
-            conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(10000);
-            conn.setConnectTimeout(15000);
-            conn.setRequestMethod("PUT");
-            conn.setDoOutput(true);
-            conn.setFixedLengthStreamingMode(data.getBytes().length);
-            conn.setRequestProperty("Content-Type", "application/json");
-            PrintWriter out = new PrintWriter(conn.getOutputStream());
-            out.print(data);
-            out.close();
-            int responseCode = conn.getResponseCode();
-            Log.i("error", new Integer(responseCode).toString());
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            conn.disconnect();
-        }
-    }
+//    public static void updateData(String urlStr, String id, String data) {
+//        URL url = null;
+//        HttpURLConnection conn = null;
+//        try {
+//            url = new URL(BASE_URL + urlStr + "/" + id);
+//            conn = (HttpURLConnection) url.openConnection();
+//            conn.setReadTimeout(10000);
+//            conn.setConnectTimeout(15000);
+//            conn.setRequestMethod("PUT");
+//            conn.setDoOutput(true);
+//            conn.setFixedLengthStreamingMode(data.getBytes().length);
+//            conn.setRequestProperty("Content-Type", "application/json");
+//            PrintWriter out = new PrintWriter(conn.getOutputStream());
+//            out.print(data);
+//            out.close();
+//            int responseCode = conn.getResponseCode();
+//            Log.i("error", new Integer(responseCode).toString());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        } finally {
+//            conn.disconnect();
+//        }
+//    }
 
-    public static boolean isExist(String input, String type) {
-        boolean exist = true;
-        String userStr;
-        switch (type) {
-            case "userName":
-                String userUrl = "calorietracker.users/findByUserName/" + input;
-                userStr = getData(userUrl);
-                if (userStr.equals("[]")) {
-                    exist = false;
-                }
-                break;
-            case "email":
-                String emailUrl = "calorietracker.users/findByEmail/" + input;
-                userStr = getData(emailUrl);
-                if (userStr.equals("[]")) {
-                    exist = false;
-                }
-                break;
-        }
-        return exist;
-    }
 
-    public static int getMaxId(String type) {
+    /**
+     * count user amount
+     */
+    private static int getMaxId() {
         int id = 0;
-        URL url = null;
-        String idStr = "";
-        String idUrlStr = "";
+        URL url;
+        String idStr;
+        String idUrlStr;
 
-        switch (type) {
-            case "user":
-                idUrlStr = "calorietracker.users/count/";
-                break;
-            case "cred":
-                idUrlStr = "calorietracker.credential/count/";
-                break;
-            case "consumption":
-                idUrlStr = "calorietracker.consumption/count/";
-                break;
-            case "food":
-                idUrlStr = "calorietracker.food/count/";
-                break;
-            case "report":
-                idUrlStr = "calorietracker.report/count/";
-                break;
-        }
+        idUrlStr = "CredentialCount";
 
         HttpURLConnection conn = null;
 
@@ -268,18 +202,22 @@ public class RestClient {
             Scanner inStream = new Scanner(conn.getInputStream());
             while (inStream.hasNextLine()) {
                 idStr = inStream.nextLine();
+                id = Integer.parseInt(idStr.replaceAll("[^\\d.]", ""));
             }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             conn.disconnect();
         }
-        id = Integer.parseInt(idStr);
+//        [{ "COUNT(*)": 5 }]
         return id;
     }
 
-    public static String getData(String urlStr) {
-        URL url = null;
+    /**
+     * get data from database by rest api
+     */
+    private static String getData(String urlStr) {
+        URL url;
         HttpURLConnection conn = null;
         StringBuilder result = new StringBuilder();
         try {

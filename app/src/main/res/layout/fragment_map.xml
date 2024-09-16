@@ -1,84 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/map_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="48dp"
-    android:padding="4dp">
+    android:background="#EEEEEE"
+    android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/relLayout1"
-        android:layout_width="367dp"
-        android:layout_height="40dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginRight="10dp"
-        android:background="@android:color/transparent"
-        android:elevation="10dp">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_legend"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/toolbar"
+        android:layout_alignParentTop="false"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/display_card"
+        android:padding="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <EditText
-            android:id="@+id/ed_search"
-            android:layout_width="174dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:hint="Enter address"
-            android:imeOptions="actionSearch"
-            android:textColor="#000"
-            android:textSize="15sp" />
+        <TextView
+            android:id="@+id/tv_map_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="8dp"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:fontFamily="@font/open_sans"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.67"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <Spinner
-            android:id="@+id/sp_facility_type"
-            android:layout_width="174dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="@+id/ed_search"
-            android:layout_marginLeft="182dp"
-            android:layout_marginRight="-175dp"
-            android:hint="Choose facility type"
-            android:imeOptions="actionSearch"
-            android:spinnerMode="dropdown"
-            android:textColor="#000"
-            android:textSize="15sp" />
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <RelativeLayout
-        android:id="@+id/relLayout2"
-        android:layout_width="367dp"
-        android:layout_height="40dp"
-        android:layout_below="@+id/relLayout1"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginRight="10dp"
-        android:background="@android:color/transparent"
-        android:elevation="10dp">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar3"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-        <!--<Button-->
-            <!--android:id="@+id/search_place"-->
-            <!--android:layout_width="174dp"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_alignParentLeft="true"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:layout_marginLeft="2dp"-->
-            <!--android:text="search place" />-->
-
-        <Button
-            android:id="@+id/search_facilities"
-            android:layout_width="183dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="8dp"
-            android:text="Search Facilities">
-
-        </Button>
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="15dp"
+        android:paddingLeft="15dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="15dp"
+        android:text="Outdoor Activity Locations"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:fontFamily="@font/open_sans"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/map"
-        android:layout_width="wrap_content"
-        android:layout_height="480dp"
-        android:layout_below="@+id/relLayout2" />
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@+id/cl_legend"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHeight_default="percent"
+        app:layout_constraintHeight_percent="0.8"
+        app:layout_constraintTop_toBottomOf="@+id/cl_legend" />
+
+<!--        <com.google.android.material.bottomnavigation.BottomNavigationView-->
+
+<!--        android:id="@+id/navbot"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:background="#ffffff"-->
+<!--        android:fitsSystemWindows="true"-->
+<!--        android:fontFamily="@font/open_sans"-->
+<!--        app:itemIconTint="@drawable/icon_selected"-->
+<!--        app:itemTextColor="@drawable/icon_selected"-->
+<!--        app:menu="@menu/menu_bot_nav" />-->
 
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

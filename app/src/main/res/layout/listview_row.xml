@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--<TextView xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:id="@+id/label"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="60dp"-->
+<!--    android:drawableRight="@drawable/ic_arrow_forward_black_24dp"-->
+<!--    app:fontFamily="sans-serif"-->
+<!--    android:padding="12dp"-->
+<!--    android:paddingStart="20dp"-->
+<!--    android:paddingLeft="20dp"-->
+<!--    android:text="test_item"-->
+<!--    android:textColor="@color/design_default_color_on_secondary"-->
+<!--    android:textSize="22sp"-->
+<!--    android:background="@drawable/display_card"-->
+<!--    android:drawableEnd="@drawable/ic_arrow_forward_black_24dp"-->
+<!--    tools:ignore="RtlSymmetry">-->
+<!--</TextView>-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="360dp"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="340dp"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="8dp"
+    android:layout_marginTop="6dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginBottom="2dp"
+    android:background="@drawable/display_card"
+    android:elevation="10dp"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/exercise_image"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.47"
+        app:srcCompat="@drawable/planks" />
+
+    <!--<ImageView-->
+    <!--    android:id="@+id/imageView5"-->
+    <!--    android:layout_width="wrap_content"-->
+    <!--    android:layout_height="wrap_content"-->
+    <!--    android:layout_alignParentStart="true"-->
+    <!--    android:layout_alignParentLeft="false"-->
+    <!--    android:layout_alignParentBottom="true"-->
+    <!--    android:layout_marginStart="10dp"-->
+    <!--    android:layout_marginLeft="10dp"-->
+    <!--    android:layout_marginTop="15dp"-->
+    <!--    android:background="@drawable/display_card"-->
+    <!--    android:cropToPadding="false"-->
+    <!--    android:src="@drawable/plank_1"-->
+    <!--    app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--    app:layout_constraintStart_toStartOf="parent"-->
+    <!--    app:layout_constraintTop_toTopOf="parent">-->
+
+    <!--</ImageView>-->
+
+    <!--<ImageView-->
+    <!--    android:id="@+id/imageView6"-->
+    <!--    android:layout_width="wrap_content"-->
+    <!--    android:layout_height="wrap_content"-->
+    <!--    android:layout_marginStart="24dp"-->
+    <!--    android:layout_marginLeft="24dp"-->
+    <!--    android:layout_marginTop="8dp"-->
+    <!--    android:layout_weight="1"-->
+    <!--    app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--    app:layout_constraintStart_toEndOf="@+id/imageView5"-->
+    <!--    app:layout_constraintTop_toBottomOf="@+id/textView12"-->
+    <!--    app:layout_constraintVertical_bias="0.0"-->
+    <!--    app:srcCompat="@drawable/ic_icon_awesome_thumbs_up" />-->
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/textView15"-->
+    <!--        android:layout_width="11dp"-->
+    <!--        android:layout_height="18dp"-->
+    <!--        android:layout_marginStart="4dp"-->
+    <!--        android:layout_marginLeft="4dp"-->
+    <!--        android:layout_marginTop="8dp"-->
+    <!--        android:text="25"-->
+    <!--        android:textSize="12sp"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintStart_toEndOf="@+id/imageView6"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/textView12"-->
+    <!--        app:layout_constraintVertical_bias="0.7" />-->
+
+    <TextView
+        android:id="@+id/exercise_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textView12"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginRight="100dp"
+        android:text="Literally Just Jumping"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp"
+        app:fontFamily="@font/open_sans"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/exercise_image"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="12dp"
+        android:text="Exercise Type: "
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp"
+        app:fontFamily="@font/open_sans"
+        app:layout_constraintStart_toEndOf="@+id/exercise_image"
+        app:layout_constraintTop_toBottomOf="@+id/exercise_name_tv" />
+
+    <TextView
+        android:id="@+id/exercise_type_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Cardio"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp"
+        app:fontFamily="@font/open_sans"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.175"
+        app:layout_constraintStart_toEndOf="@+id/textView12"
+        app:layout_constraintTop_toBottomOf="@+id/exercise_name_tv"
+        app:layout_constraintVertical_bias="0.2" />
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_weight="1"
+        android:tint="@color/colorSecond"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/exercise_name_tv"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_icon_ionic_ios_arrow_forward" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
